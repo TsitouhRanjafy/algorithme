@@ -1,0 +1,1 @@
+# Differente algorithme avec Python 3.12.6
