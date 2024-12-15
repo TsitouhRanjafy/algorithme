@@ -2,7 +2,8 @@
 
 
 # Sommaire
--(recursive)
+
+ - [recursive]()
 
 # recursive:
 - factorielle (ex: 3! = 6)
