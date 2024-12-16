@@ -10,16 +10,16 @@ def factorielle(n):
 # Palindrome <string><int>
 # <string>: le mot à tester
 # <int>: élever n caractère au début et à la fin du mot avant de tester
-def palindrome(n,i=0): 
+def isPalindrome(n,i=0): 
     n = n.lower();
     if i <= (len(n) // 2):
         if n[i] == n[len(n)-i-1]:
-            return palindrome(n,i+1);
+            return isPalindrome(n,i+1);
         else:
             return False;
     else:
         return True;
-# print(palindrome("ici"))  ==> True
+# print(isPalindrome("ici"))  ==> True
 
 
 # Partitition <string><int>

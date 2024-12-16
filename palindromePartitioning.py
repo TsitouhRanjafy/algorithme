@@ -1,24 +1,32 @@
-import os,codecs
-from recursive import partitioning,palindrome;
+from recursive import isPalindrome;
 
 
 def palindromePartitioning(s):
     newList = [];
-    newList.append(partitioning(s))
-    i = 2;
-    j = 0;
-    while i<len(s):
-        newPartition = partitioning(s,i);
-        tmpList = [];
-        while j<len(newPartition):
-            print(palindrome(newPartition[j])," : "+newPartition[j]);
-            if (palindrome(newPartition[j])): tmpList.append(newPartition[j]);
+    existPalindrome = False;
+
+    i = 0;
+    n = len(s)
+    while i<n:
+        if (isPalindrome(s)): 
+            newList.append(s);
+            return newList;
+        j = 1;
+        existPalindrome = False;
+        while j < (len(s)-1):
+            if (isPalindrome(s[0:j+1])):
+                newList.append(s[0:j+1]);
+                s = s[j+1:];
+                existPalindrome = True;
+                break;
             j+=1;
-        if len(tmpList)!=0: newList.append(tmpList)
+        if (existPalindrome==False):
+            newList.append(s[0]);
+            s = s[1:];
         i+=1;
     return newList;
 
-# print(palindromePartitioning('aabhh'))
+print(palindromePartitioning('aa'))
 
 
 
