@@ -4,6 +4,18 @@ Cette [algorithme](https://www.youtube.com/watch?v=aZ0B1eWkSVU) consiste à trou
 
 Une partitionnement d'une chaîne est **Palindrome Partitioning** si chaque sous-chaîne de la partition est palindrome.
 
+[Palindrome.Partitioning.pdf](https://github.com/user-attachments/files/18151679/Diagramme.sans.nom.drawio.pdf)
+
+![Palindrome.Partitioning](https://github.com/user-attachments/assets/aa0c95fc-e4c2-415a-b467-77d771d9dcbb)
+
+### Exmple:
+
+  - Input: s = 'aabhh'
+  
+  - Output: list = ['aa','b','hh]
+
+
+
 
 
 
