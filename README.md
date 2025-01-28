@@ -8,13 +8,13 @@ Une partitionnement d'une chaîne est **Palindrome Partitioning** si chaque sous
 
 ![Palindrome.Partitioning](https://github.com/user-attachments/assets/aa0c95fc-e4c2-415a-b467-77d771d9dcbb)
 
-### Exmple:
+### Exemple:
 
   - Input: s = 'aabhh'
   
   - Output: list = ['aa','b','hh]
 
-
+Bon conding!! 🎉
 
 
 
