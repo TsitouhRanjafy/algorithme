@@ -4,7 +4,7 @@
 ## Sommaire
 
 - **Recursion et Backtraking**
-  - [recursive](https://github.com/TsitouhRanjafy/Python/tree/recursive)
+  - [factorielle et palindrome](https://github.com/TsitouhRanjafy/Python/tree/recursive)
   - [nombre-premier](https://github.com/TsitouhRanjafy/Python/blob/base/base.py)
   - [palindrome partitioning](https://github.com/TsitouhRanjafy/Python/tree/palindrome.partitioning)
 
