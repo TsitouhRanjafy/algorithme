@@ -14,6 +14,10 @@ Explore a range of powerful algorithms implemented in Python 3.12.6. This reposi
 - 🔗 [Palindrome Partitioning](https://github.com/TsitouhRanjafy/Python/tree/palindrome.partitioning)  
   Solve the palindrome partitioning problem using backtracking techniques. Break a string into all possible palindromic partitions.
 
+- 🔗 [Merge Array](#) : [LeetCode 88](#)
+  Python solution for merging two sorted arrays in-place. The algorithm runs in `O(m + n)` time complexity and uses `O(1)` extra space.
+
+
 ## 🚀 Features
 - Written in Python 3.12.6
 - Focus on core algorithms, recursion, and backtracking
