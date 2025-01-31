@@ -14,9 +14,8 @@ Explore a range of powerful algorithms implemented in Python 3.12.6. This reposi
 - 🔗 [Palindrome Partitioning](https://github.com/TsitouhRanjafy/Python/tree/palindrome.partitioning)  
   Solve the palindrome partitioning problem using backtracking techniques. Break a string into all possible palindromic partitions.
 
-- 🔗 [Merge Array](https://github.com/TsitouhRanjafy/Python/blob/merge-array/merge-array.py) ([LeetCode 88](https://leetcode.com/problems/merge-sorted-array/submissions/1526158540))
-  
-  Python solution for merging two sorted arrays in-place. The algorithm runs in `O(m + n)` time complexity and uses `O(1)` extra space.
+- 🔗 [Merge Array](https://github.com/TsitouhRanjafy/Python/blob/merge-array/merge-array.py) ([LeetCode 88](https://leetcode.com/problems/merge-sorted-array/submissions/1526158540))  
+    Python solution for merging two sorted arrays in-place. The algorithm runs in `O(m + n)` time complexity and uses `O(1)` extra space.
 
 
 ## 🚀 Features
