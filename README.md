@@ -17,7 +17,7 @@ Explore a range of powerful algorithms implemented in Python 3.12.6. This reposi
 - 🔗 [Merge Array](https://github.com/TsitouhRanjafy/Python/blob/merge-array/merge-array.py) ([LeetCode 88](https://leetcode.com/problems/merge-sorted-array/submissions/1526158540))  
     Python solution for merging two sorted arrays in-place. The algorithm runs in `O(m + n)` time complexity and uses `O(1)` extra space.
 
-- 🔗 [CheckParity01](https://github.com/TsitouhRanjafy/Python/blob/merge-array/merge-array.py)  
+- 🔗 [CheckParity01](https://github.com/TsitouhRanjafy/Python/blob/parity/parity.py)  
     - 1- Verification of parity 0 and 1 only **`isHasParity_0_1(list,i,q,contient1,contient0)`**
             
 
