@@ -19,10 +19,17 @@ Explore a range of powerful algorithms implemented in Python 3.12.6, Typescript.
 
 - 🔗 [CheckParity01](https://github.com/TsitouhRanjafy/Python/blob/parity/parity.py)  
     - 1- Verification of parity 0 and 1 only **`isHasParity_0_1(list,i,q,contient1,contient0)`**
-            
+ 
+- 🔗 [Binary Logic CLI](https://github.com/TsitouhRanjafy/Algorithme-/blob/verite_binaire/main.ts)  
+     Simple command-line interface (CLI) tool for performing basic binary logic operations: `AND`(ET),`OR`(OU), `NOT`(NON),`IMPLICATION`(IMPLIQUE)
+  
+### 2. **Other**
+- 🔗 [Crible d'Eratosthene](https://github.com/TsitouhRanjafy/Algorithme-/tree/crible_eratosthene)
+- 🔗 [Couple amis](https://github.com/TsitouhRanjafy/Algorithme-/tree/couple_amis)
+  
 
 
 ## 🚀 Features
-- Written in Python 3.12.6
+- Written in Python 3.12.6, Typescript, Java, ... 
 - Focus on core algorithms, recursion, and backtracking
 - Clean, easy-to-understand code, optimized for performance
