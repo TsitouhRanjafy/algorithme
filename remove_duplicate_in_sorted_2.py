@@ -21,7 +21,7 @@ class Solution(object):
                 i += 1
         return k + 1
 
-lists = [0,0,1]
+lists = [0,0,1,1,1,2,2,3,5,5,5]
 
 print(Solution().removeDuplicates(lists))
 
