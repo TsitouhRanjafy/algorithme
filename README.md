@@ -29,6 +29,8 @@ Explore a range of powerful algorithms implemented in Python 3.12.6, Typescript.
 - 🔗 Occurance
   
   - [code](https://github.com/TsitouhRanjafy/Algorithme-/blob/main/return_occurance.py) Remove the occurance in Array (eg: [1,2,4,4,1] => [1,2,4,_,_])
+  - [code](https://github.com/TsitouhRanjafy/Algorithme-/blob/main/remove_duplicate_in_sorted_1.py) Remove duplicate from sorted Array
+  - [code](https://github.com/TsitouhRanjafy/Algorithme-/blob/main/remove_duplicate_in_sorted_2.py) Remove duplicate from sorted Array, with max_duplicate = 2 (eg: [0,0,1,2,2,2,3] => [0,0,1,2,2,3,_])
   
 
 
