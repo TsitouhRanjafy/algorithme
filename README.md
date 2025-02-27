@@ -20,7 +20,7 @@ Explore a range of powerful algorithms implemented in Python 3.12.6, Typescript.
 - 🔗 [Check Parity 0 and 1 in Array](https://github.com/TsitouhRanjafy/Python/blob/parity/parity.py)  
     - 1- Verification of parity 0 and 1 only **`isHasParity_0_1(list,i,q,contient1,contient0)`**
  
-- 🔗 [Binary Logic CLI](https://github.com/TsitouhRanjafy/Algorithme-/tree/verite_binaire)   
+- 🔗 [Simple Binary Logic CLI](https://github.com/TsitouhRanjafy/Algorithme-/tree/verite_binaire)   
      Simple command-line interface (CLI) tool for performing basic binary logic operations: `AND`(ET),`OR`(OU), `NOT`(NON),`IMPLICATION`(IMPLIQUE)
   
 ### 2. **Other**
