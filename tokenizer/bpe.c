@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdint.h>
+#include<stdbool.h>
 
 
 #define STB_DS_IMPLEMENTATION
@@ -37,12 +38,13 @@ void hmprint(const Freq *fred);
 int compare_freq(const void *a, const void *b);
 void hmcp(Freq *freq,Freqs *freqs);
 void render_tokens(Pairs pairs, Tokens tokens);
+void swap(Tokens *a, Tokens *b);
+
 
 int main(){
     
     const char *text = "aaabdaaabac";
-    const char *TOKEN_V ="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    size_t TOKEN_V_AVAILABLE = strlen(TOKEN_V);
+    uint32_t CURRENT_AVAILABLE_TOKEN_RENDER = 126;
     size_t text_size = strlen(text);
     Freqs sorted_freqs = {
         .items = NULL,
@@ -54,9 +56,9 @@ int main(){
     Tokens tokens_out = {0};
 
     // append default pairing
-    for (uint32_t i = 0; i < 126; ++i) 
+    for (uint32_t i = 0; i < 256; ++i) 
         arrput(pairs.items,((Pair) { .l = i, .r = 0 }));
-    pairs.count = 126;
+    pairs.count = 256;
     pairs.capacity = sizeof(Pair);   
 
     // append text[i] in tokens_in
@@ -66,10 +68,10 @@ int main(){
     tokens_in.capacity = sizeof(text[0]);
 
 
-    printf("\t %0.9zu :",tokens_in.count);
+    printf("\t %0.4zu :",tokens_in.count);
     render_tokens(pairs,tokens_in);
     printf("\n");
-    for (size_t i = 0; i < 2; ++i){
+    for (bool i = true; i == 1;){
         // append all pairing freqency to freq
         for (size_t i = 0; i < tokens_in.count - 1; ++i){
             Pair key = {
@@ -88,6 +90,10 @@ int main(){
             if (freq[i].value > freq[max_index].value)
                 max_index = i;
         printf(" most freq: (%u, %u) => %zu\n",freq[max_index].key.l,freq[max_index].key.r,freq[max_index].value);
+        if (freq[max_index].value <= 1) {
+            printf("\n\t!Compression is done!");
+            break;
+        }
 
         // append the tokens_out by tokens_in with replce the most freqency token to TOKEN_V
         for (size_t i = 0; i < tokens_in.count;){
@@ -99,8 +105,8 @@ int main(){
             }
             Pair pair = { .l = tokens_in.items[i], .r = tokens_in.items[i + 1]};
             if (memcmp(&pair,&freq[max_index].key,sizeof(Pair)) == 0) {
-                arrput(tokens_out.items,(uint32_t)TOKEN_V[TOKEN_V_AVAILABLE - 1]);
-                pairs.items[(uint32_t)TOKEN_V[TOKEN_V_AVAILABLE - 1]] = pair;
+                arrput(tokens_out.items,CURRENT_AVAILABLE_TOKEN_RENDER);
+                pairs.items[CURRENT_AVAILABLE_TOKEN_RENDER] = pair;
                 i += 2;
                 continue;
             }
@@ -109,24 +115,19 @@ int main(){
         } 
 
         // print the text tokenized
-        printf("\t %0.9zu :",tokens_out.count);
-        render_tokens(pairs,tokens_out);
-        TOKEN_V_AVAILABLE -= 1;
-
+        printf("\t %0.4zu :",tokens_out.count);
+        render_tokens(pairs,tokens_out);     
+        
         // print the dico
-        printf("\t DICO: {");
-        for (size_t i = strlen(TOKEN_V) - 1; i > TOKEN_V_AVAILABLE - 1; --i){
-            printf("(%c,%c) => %c,",pairs.items[(uint32_t)TOKEN_V[i]].l,pairs.items[(uint32_t)TOKEN_V[i]].r,(uint32_t)TOKEN_V[i]);
+        printf("\t DICO: {\n");
+        for (size_t i = 126; i <= CURRENT_AVAILABLE_TOKEN_RENDER; ++i){
+            printf("\t\t%u => (%u,%u),\n",i,pairs.items[i].l,pairs.items[i].r);
         }
-        printf("}");
-
-        arrfree(tokens_in.items);
-        for (size_t i = 0; i < tokens_out.count; ++i){
-            arrput(tokens_in.items,tokens_out.items[i]);
-        }
-        tokens_in.count = tokens_out.count;
-        arrfree(tokens_out.items);
+        printf("\t       }\n\n");
+        
+        swap(&tokens_in,&tokens_out);
         hmfree(freq);
+        CURRENT_AVAILABLE_TOKEN_RENDER += 1;
     }
 
     hmfree(freq);
@@ -160,15 +161,25 @@ void hmcp(Freq *freq,Freqs *freqs){
 void render_tokens(Pairs pairs, Tokens tokens){
     for (size_t i = 0; i < tokens.count; ++i){
         uint32_t token = tokens.items[i];
-        if (token < 32 || token >= 126){
-            printf("\n\nerreur ici: token = %u, ce qui doit être `32 <= token && token < 126'\n",token);
+        if (token < 32 || token > 256)
+            printf("\nError: token = %u, except `token >= 32 && token <= 256`\n",token);
+        assert(token >= 32 && token <= 256);
+        if (pairs.items[token].l == token){
+            printf("%c",token);
+        } else {
+            printf("[%u]",token);
         }
-        assert(32 <= token && token < 126);
-        printf("%c",token);
-        // if (pairs.items[token].l == token){
-        // } else {
-        //     printf("[%u]",token);
-        // }
     }
     printf("\n");
+}
+
+void swap(Tokens *a, Tokens *b){
+    arrfree((*(*(&a))).items);
+    (*(*(&a))).items = NULL;
+    for (size_t i = 0; i < (*(*(&b))).count; ++i)
+        arrput((*(*(&a))).items,(*(*(&b))).items[i]);
+    (*(*(&a))).count = (*(*(&b))).count;
+    arrfree((*(*(&b))).items);
+    (*(*(&b))).items = NULL;
+    (*(*(&b))).count = 0;
 }
