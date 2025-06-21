@@ -1,11 +1,10 @@
 #include<stdio.h>
 #include<string.h>
-#include<stdint.h>
-#include<stdbool.h>
+#include<stdint.h>  
 
 
 #define STB_DS_IMPLEMENTATION
-#include "stb_ds.h"
+#include "lib/stb_ds.h"
 
 
 typedef struct {
@@ -39,7 +38,7 @@ int compare_freq(const void *a, const void *b);
 void hmcp(Freq *freq,Freqs *freqs);
 void render_tokens(Pairs pairs, Tokens tokens);
 void swap(Tokens *a, Tokens *b);
-
+void grenerate_graphviz(Pairs pairs);
 
 int main(){
     
@@ -71,7 +70,7 @@ int main(){
     printf("\t %0.4zu :",tokens_in.count);
     render_tokens(pairs,tokens_in);
     printf("\n");
-    for (bool i = true; i == 1;){
+    for (;;){
         // append all pairing freqency to freq
         for (size_t i = 0; i < tokens_in.count - 1; ++i){
             Pair key = {
@@ -129,7 +128,8 @@ int main(){
         hmfree(freq);
         CURRENT_AVAILABLE_TOKEN_RENDER += 1;
     }
-
+    printf("\n");
+    grenerate_graphviz(pairs);
     hmfree(freq);
     hmfree(sorted_freqs.items);
     arrfree(tokens_in.items);
@@ -182,4 +182,14 @@ void swap(Tokens *a, Tokens *b){
     arrfree((*(*(&b))).items);
     (*(*(&b))).items = NULL;
     (*(*(&b))).count = 0;
+}
+
+void grenerate_graphviz(Pairs pairs){
+    printf("digraph{\n");
+    for (size_t i = 0; i < pairs.count; ++i){
+        if (pairs.items[i].l != i) {
+            printf("\t%zu -> {%u,%u}\n",i,pairs.items[i].l,pairs.items[i].r);
+        }
+    }
+    printf("}");
 }
