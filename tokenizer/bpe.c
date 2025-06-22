@@ -67,9 +67,10 @@ int main(){
     tokens_in.capacity = sizeof(text[0]);
 
 
-    printf("\t %0.4zu :",tokens_in.count);
+    printf("\n Original text:");
     render_tokens(pairs,tokens_in);
-    printf("\n");
+    printf(" Original size: %0.4zu\n",tokens_in.count);
+    printf("\n\t! Compressing...\n");
     for (;;){
         // append all pairing freqency to freq
         for (size_t i = 0; i < tokens_in.count - 1; ++i){
@@ -88,9 +89,9 @@ int main(){
         for (size_t i = 1; i < hmlen(freq); ++i)
             if (freq[i].value > freq[max_index].value)
                 max_index = i;
-        printf(" most freq: (%u, %u) => %zu\n",freq[max_index].key.l,freq[max_index].key.r,freq[max_index].value);
+        // printf(" most freq: (%u, %u) => %zu\n",freq[max_index].key.l,freq[max_index].key.r,freq[max_index].value);
         if (freq[max_index].value <= 1) {
-            printf("\n\t!Compression is done!");
+            printf("\n\t✓ Compression is done\n");
             break;
         }
 
@@ -112,22 +113,25 @@ int main(){
             arrput(tokens_out.items,(uint32_t)tokens_in.items[i]);
             i += 1;
         } 
-
-        // print the text tokenized
-        printf("\t %0.4zu :",tokens_out.count);
-        render_tokens(pairs,tokens_out);     
-        
-        // print the dico
-        printf("\t DICO: {\n");
-        for (size_t i = 126; i <= CURRENT_AVAILABLE_TOKEN_RENDER; ++i){
-            printf("\t\t%u => (%u,%u),\n",i,pairs.items[i].l,pairs.items[i].r);
-        }
-        printf("\t       }\n\n");
         
         swap(&tokens_in,&tokens_out);
         hmfree(freq);
         CURRENT_AVAILABLE_TOKEN_RENDER += 1;
     }
+    
+    // print the text tokenized
+    printf("\n Final text:");
+    render_tokens(pairs,tokens_in);     
+    printf(" Compressed size: %0.4zu\n",tokens_in.count);
+
+
+    // // print the dico
+    printf("\n Token: {\n");
+    for (size_t i = 126; i <= CURRENT_AVAILABLE_TOKEN_RENDER; ++i){
+        printf("\t%u => (%u,%u),\n",i,pairs.items[i].l,pairs.items[i].r);
+    }
+    printf("       }\n\n");
+    
     printf("\n");
     grenerate_graphviz(pairs);
     hmfree(freq);
@@ -185,11 +189,12 @@ void swap(Tokens *a, Tokens *b){
 }
 
 void grenerate_graphviz(Pairs pairs){
-    printf("digraph{\n");
+    printf(" DOT generated: \n");
+    printf(" digraph{\n");
     for (size_t i = 0; i < pairs.count; ++i){
         if (pairs.items[i].l != i) {
             printf("\t%zu -> {%u,%u}\n",i,pairs.items[i].l,pairs.items[i].r);
         }
     }
-    printf("}");
+    printf(" }");
 }
