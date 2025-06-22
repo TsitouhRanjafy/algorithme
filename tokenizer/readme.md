@@ -23,15 +23,16 @@ Debuter notre nouveau token à 126 et on s'increment à quand fois.
 ### Entrée
 
 Text original: `aaabdaaabac`    
-Taille: 0011    
+Taille: `0011`    
 
 ### Sortie
 
-Texte final : [128]d[128]ac     
-Taille : 0005
+Texte final : `[128]d[128]ac`     
+Taille : `0005`
 
 ### Vocabulaire (mode graph)
 
+![graphviz_bpe](https://github.com/user-attachments/assets/2c06cfef-48ec-4667-be70-8300f4f285db)
 
 
 ### Processus
@@ -65,3 +66,4 @@ Original size: 0011
 ```
 
 
+### Made with ❤️ By **Tsitohaina** 😊
