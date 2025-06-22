@@ -130,7 +130,7 @@ int main(){
     for (size_t i = 126; i <= CURRENT_AVAILABLE_TOKEN_RENDER; ++i){
         printf("\t%u => (%u,%u),\n",i,pairs.items[i].l,pairs.items[i].r);
     }
-    printf("       }\n\n");
+    printf("        }\n\n");
     
     printf("\n");
     grenerate_graphviz(pairs);
