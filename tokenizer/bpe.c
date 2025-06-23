@@ -31,6 +31,7 @@ typedef struct {
     size_t count, capacity;
 } Tokens;
 
+
 Freq *freq = NULL;
 
 void hmprint(const Freq *fred);
@@ -42,7 +43,7 @@ void grenerate_graphviz(Pairs pairs);
 
 int main(){
     
-    const char *text = "aaabdaaabac";
+    const char *text = "aaabaaabac";
     uint32_t CURRENT_AVAILABLE_TOKEN_RENDER = 126;
     size_t text_size = strlen(text);
     Freqs sorted_freqs = {
@@ -89,7 +90,6 @@ int main(){
         for (size_t i = 1; i < hmlen(freq); ++i)
             if (freq[i].value > freq[max_index].value)
                 max_index = i;
-        // printf(" most freq: (%u, %u) => %zu\n",freq[max_index].key.l,freq[max_index].key.r,freq[max_index].value);
         if (freq[max_index].value <= 1) {
             printf("\n\t✓ Compression is done\n");
             break;
@@ -126,11 +126,11 @@ int main(){
 
 
     // // print the dico
-    printf("\n Token: {\n");
+    printf("\n Token vocabulary: {\n");
     for (size_t i = 126; i <= CURRENT_AVAILABLE_TOKEN_RENDER; ++i){
-        printf("\t%u => (%u,%u),\n",i,pairs.items[i].l,pairs.items[i].r);
+        printf("\t\t      %u => (%u,%u),\n",i,pairs.items[i].l,pairs.items[i].r);
     }
-    printf("        }\n\n");
+    printf("                   }\n\n");
     
     printf("\n");
     grenerate_graphviz(pairs);
@@ -171,7 +171,7 @@ void render_tokens(Pairs pairs, Tokens tokens){
         if (pairs.items[token].l == token){
             printf("%c",token);
         } else {
-            printf("[%u]",token);
+            printf("%u",token);
         }
     }
     printf("\n");
@@ -189,12 +189,32 @@ void swap(Tokens *a, Tokens *b){
 }
 
 void grenerate_graphviz(Pairs pairs){
-    printf(" DOT generated: \n");
-    printf(" digraph{\n");
+    
+    char *dot = NULL;
+    dot = malloc(sizeof(char) * 1000);
+    if (dot == NULL) exit(1);
+    ptrdiff_t current_dot_len = 0;
+    
     for (size_t i = 0; i < pairs.count; ++i){
         if (pairs.items[i].l != i) {
-            printf("\t%zu -> {%u,%u}\n",i,pairs.items[i].l,pairs.items[i].r);
+            char c_tmp[20];
+            ptrdiff_t dot_len = snprintf(c_tmp,20,"%zu -> {%u,%u} ",i,pairs.items[i].l,pairs.items[i].r);
+            assert(dot_len < 20);
+            
+            for (size_t j = 0 ; j < dot_len; ++j){
+                *(*(&dot) + j + current_dot_len) = c_tmp[j];
+            }
+            *(*(&dot) + dot_len + current_dot_len) = '\0';
+            current_dot_len += dot_len;
+            assert(current_dot_len < 1000);
         }
     }
-    printf(" }");
+    printf(" DOT generated: \n");
+    printf(" digraph{ %s}",dot);
+    char cmd_bash[current_dot_len + 22];
+    int j = snprintf(cmd_bash,(current_dot_len + 22),"./cmd.sh 'digraph{ %s}'",dot); 
+    system("chmod +x cmd.sh");
+    system(cmd_bash);
+
+    free(dot);
 }
