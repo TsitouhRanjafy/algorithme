@@ -33,6 +33,7 @@ typedef struct {
 
 
 Freq *freq = NULL;
+const size_t MAX_PAIR_COUNT = 65536;
 
 void hmprint(const Freq *fred);
 int compare_freq(const void *a, const void *b);
@@ -43,9 +44,10 @@ void grenerate_graphviz(Pairs pairs);
 
 int main(){
     
-    const char *text = "aaabaaabac";
+    // const char *text = "The original BPE algorithm operates by iteratively replacing the most common contiguous sequences of characters in a target text with unused 'placeholder' bytes. The iteration ends when no sequences can be found, leaving the target text effectively compressed. Decompression can be performed by reversing this process, querying known placeholder terms against their corresponding denoted sequence, using a lookup table. In the original paper, this lookup table is encoded and stored alongside the compressed text.";
+    const char *text = "aaabdaabdaac";
+    const size_t text_size = strlen(text);
     uint32_t CURRENT_AVAILABLE_TOKEN_RENDER = 126;
-    size_t text_size = strlen(text);
     Freqs sorted_freqs = {
         .items = NULL,
         .count = 0,
@@ -56,9 +58,9 @@ int main(){
     Tokens tokens_out = {0};
 
     // append default pairing
-    for (uint32_t i = 0; i < 256; ++i) 
+    for (uint32_t i = 0; i < MAX_PAIR_COUNT; ++i) 
         arrput(pairs.items,((Pair) { .l = i, .r = 0 }));
-    pairs.count = 256;
+    pairs.count = MAX_PAIR_COUNT;
     pairs.capacity = sizeof(Pair);   
 
     // append text[i] in tokens_in
@@ -106,6 +108,7 @@ int main(){
             Pair pair = { .l = tokens_in.items[i], .r = tokens_in.items[i + 1]};
             if (memcmp(&pair,&freq[max_index].key,sizeof(Pair)) == 0) {
                 arrput(tokens_out.items,CURRENT_AVAILABLE_TOKEN_RENDER);
+                assert(CURRENT_AVAILABLE_TOKEN_RENDER < MAX_PAIR_COUNT); 
                 pairs.items[CURRENT_AVAILABLE_TOKEN_RENDER] = pair;
                 i += 2;
                 continue;
@@ -127,7 +130,7 @@ int main(){
 
     // // print the dico
     printf("\n Token vocabulary: {\n");
-    for (size_t i = 126; i <= CURRENT_AVAILABLE_TOKEN_RENDER; ++i){
+    for (size_t i = 126; i < CURRENT_AVAILABLE_TOKEN_RENDER; ++i){
         printf("\t\t      %u => (%u,%u),\n",i,pairs.items[i].l,pairs.items[i].r);
     }
     printf("                   }\n\n");
@@ -165,9 +168,9 @@ void hmcp(Freq *freq,Freqs *freqs){
 void render_tokens(Pairs pairs, Tokens tokens){
     for (size_t i = 0; i < tokens.count; ++i){
         uint32_t token = tokens.items[i];
-        if (token < 32 || token > 256)
+        if (token < 32 || token > MAX_PAIR_COUNT)
             printf("\nError: token = %u, except `token >= 32 && token <= 256`\n",token);
-        assert(token >= 32 && token <= 256);
+        assert(token >= 32 && token <= MAX_PAIR_COUNT);
         if (pairs.items[token].l == token){
             printf("%c",token);
         } else {
@@ -191,7 +194,7 @@ void swap(Tokens *a, Tokens *b){
 void grenerate_graphviz(Pairs pairs){
     
     char *dot = NULL;
-    dot = malloc(sizeof(char) * 1000);
+    dot = malloc(sizeof(char) * 10000);
     if (dot == NULL) exit(1);
     ptrdiff_t current_dot_len = 0;
     
@@ -206,7 +209,7 @@ void grenerate_graphviz(Pairs pairs){
             }
             *(*(&dot) + dot_len + current_dot_len) = '\0';
             current_dot_len += dot_len;
-            assert(current_dot_len < 1000);
+            assert(current_dot_len < 10000);
         }
     }
     printf(" DOT generated: \n");
