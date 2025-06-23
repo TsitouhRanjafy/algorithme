@@ -2,7 +2,6 @@
 #include<string.h>
 #include<stdint.h>  
 
-
 #define STB_DS_IMPLEMENTATION
 #include "lib/stb_ds.h"
 
@@ -34,6 +33,7 @@ typedef struct {
 
 Freq *freq = NULL;
 const size_t MAX_PAIR_COUNT = 65536;
+const size_t MAX_LEN_OF_INPUT_TEXT = 4294967296;
 
 void hmprint(const Freq *fred);
 int compare_freq(const void *a, const void *b);
@@ -41,12 +41,17 @@ void hmcp(Freq *freq,Freqs *freqs);
 void render_tokens(Pairs pairs, Tokens tokens);
 void swap(Tokens *a, Tokens *b);
 void grenerate_graphviz(Pairs pairs);
+void write(char * chaine, size_t max);
 
 int main(){
     
-    // const char *text = "The original BPE algorithm operates by iteratively replacing the most common contiguous sequences of characters in a target text with unused 'placeholder' bytes. The iteration ends when no sequences can be found, leaving the target text effectively compressed. Decompression can be performed by reversing this process, querying known placeholder terms against their corresponding denoted sequence, using a lookup table. In the original paper, this lookup table is encoded and stored alongside the compressed text.";
-    const char *text = "aaabdaabdaac";
+    // const char *text = "aaabdaabdaac";
+    char *text = NULL;
+    text = malloc(sizeof(char) * MAX_LEN_OF_INPUT_TEXT);
+    if (text == NULL) exit(1);
+    write(text,MAX_LEN_OF_INPUT_TEXT);
     const size_t text_size = strlen(text);
+    
     uint32_t CURRENT_AVAILABLE_TOKEN_RENDER = 126;
     Freqs sorted_freqs = {
         .items = NULL,
@@ -133,7 +138,7 @@ int main(){
     for (size_t i = 126; i < CURRENT_AVAILABLE_TOKEN_RENDER; ++i){
         printf("\t\t      %u => (%u,%u),\n",i,pairs.items[i].l,pairs.items[i].r);
     }
-    printf("                   }\n\n");
+    printf("\n                   }\n\n");
     
     printf("\n");
     grenerate_graphviz(pairs);
@@ -142,6 +147,7 @@ int main(){
     arrfree(tokens_in.items);
     arrfree(pairs.items);
     arrfree(tokens_out.items);
+    free(text);
     return 0;
 }
 
@@ -218,6 +224,23 @@ void grenerate_graphviz(Pairs pairs){
     int j = snprintf(cmd_bash,(current_dot_len + 22),"./cmd.sh 'digraph{ %s}'",dot); 
     system("chmod +x cmd.sh");
     system(cmd_bash);
-
     free(dot);
+}
+
+void write(char * chaine, size_t max){
+    size_t i;
+
+    printf(" Enter you text :");
+    for (i = 0; i < max; i ++){
+        char c;
+        if (scanf("%c",&c) != 1){
+            return;
+        } else if (c == '\n'){
+            break;
+        }
+        chaine[i] = c;
+    }
+
+    chaine[i] = '\0';
+    return;
 }
