@@ -32,7 +32,7 @@ Taille : `0005`
 
 ### Vocabulaire (mode graph)
 
-![graphviz_bpe](https://github.com/user-attachments/assets/2c06cfef-48ec-4667-be70-8300f4f285db)
+![graph_bpe](https://github.com/user-attachments/assets/13b6d032-a412-4b20-8323-cc2a21a4ff76)
 
 
 ### Processus
