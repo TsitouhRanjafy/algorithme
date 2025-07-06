@@ -175,12 +175,12 @@ void render_tokens(Pairs pairs, Tokens tokens){
     for (size_t i = 0; i < tokens.count; ++i){
         uint32_t token = tokens.items[i];
         if (token < 32 || token > MAX_PAIR_COUNT)
-            printf("\nError: token = %u, except `token >= 32 && token <= 256`\n",token);
+            printf("\nError: token = %u, except `token >= 32 && token <= 65536`\n",token);
         assert(token >= 32 && token <= MAX_PAIR_COUNT);
         if (pairs.items[token].l == token){
             printf("%c",token);
         } else {
-            printf("%u",token);
+            printf("[%u]",token);
         }
     }
     printf("\n");
