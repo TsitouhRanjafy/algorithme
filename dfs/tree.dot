@@ -1,0 +1,11 @@
+graph G {
+    1 [shape=ellipse,color=green];
+    2 [shape=ellipse,color=green];
+    3 [shape=ellipse,color=green];
+    4 [shape=ellipse,color=green];
+    5 [shape=ellipse,color=green];
+    6 [shape=ellipse,color=green];
+    1 -- {2,3};
+    2 -- {4,5};
+    3 -- {6};
+}
