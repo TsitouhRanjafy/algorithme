@@ -26,10 +26,12 @@
         Function (single)
             moore_dijstra:
                 Pairs *moore_dijstra(void *matrice_graph, char *node, size_t originNodePos, size_t number_of_node);
-                    matrice_graph: A pointer to a 2D adjacency matrix representing the graph (weights of directed edges).
-                    node: An array of characters representing the node names (e.g., {'A', 'B', 'C'}).
-                    originNodePos: The index of the origin node in the node[] array.
-                    number_of_node: Total number of nodes in the graph.
+                    - matrice_graph: A pointer to a 2D adjacency matrix representing the graph 
+                                    (weights of directed edges, weights > 0, 0 if not defined).
+                    - node: An array of characters representing the node names 
+                            (e.g., {'A', 'B', 'C'}).
+                    - originNodePos: The index of the origin node in the node[] array.
+                    - number_of_node: Total number of nodes in the graph.
                 
             The returned pointer must be freed manually:
                 for (int i = 0; i < shlen(foo); ++i) {
