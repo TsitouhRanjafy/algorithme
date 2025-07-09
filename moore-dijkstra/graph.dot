@@ -1,0 +1,14 @@
+digraph G {
+    A [shape=ellipse,color=red];
+    C [shape=ellipse,color=red];
+    D [shape=ellipse,color=red];
+    X [shape=ellipse,color=red];
+    A -> {C} [label = "10"];
+    A -> {X} [label = "1"];
+    A -> {D} [label = "3"];
+    C -> {D} [label = "2"];
+    X -> {A} [label = "2"];
+    X -> {D} [label = "8"];
+    D -> {C} [label = "4"];
+
+}

@@ -23,7 +23,8 @@
             shget(foo, char *T);
                 e.g: shget(foo, "D"); // Get the short weight in node origin to node "D"
 
-        Function (single)
+        Function
+
             moore_dijstra:
                 Pairs *moore_dijstra(void *matrice_graph, char *node, size_t originNodePos, size_t number_of_node);
                     - matrice_graph: A pointer to a 2D adjacency matrix representing the graph 
@@ -33,6 +34,10 @@
                     - originNodePos: The index of the origin node in the node[] array.
                     - number_of_node: Total number of nodes in the graph.
                 
+            printMatriceGraph:
+                void printMatriceGraph(void *graph, char *nodeLine, char *nodeColumne, size_t node_n)
+                    Print the matrice (graph)
+            
             The returned pointer must be freed manually:
                 for (int i = 0; i < shlen(foo); ++i) {
                     free(foo[i].key);
@@ -58,6 +63,7 @@ typedef struct {
 } Pairs;
 
 Pairs *moore_dijstra(void *matrice_graph, char *node, size_t originNodePos, size_t number_of_node);
+void printMatriceGraph(void *graph, char *nodeLine, char *nodeColumne, size_t node_n);
 
 
 #ifdef MOORE_DIJSKTRA_IMPEMENTATION
@@ -181,8 +187,8 @@ Pairs* moore_dijstra(void *matrice_graph, char *node, size_t originNodePos, size
         snprintf(tmp_key,sizeof(tmp_key),"%c",node[i]);
         shput(nodesIndex,strdup(tmp_key),i);
     }
-    printMatriceGraph(graph,node,node,number_of_node);
-    printf("\n");
+    // printMatriceGraph(graph,node,node,number_of_node);
+    // printf("\n");
     
     // STEP 1
     arrput(leftNodeOrder.items,nodesNotVisited.items[originNodePos]);
@@ -244,10 +250,9 @@ Pairs* moore_dijstra(void *matrice_graph, char *node, size_t originNodePos, size
         shput(nodesIndex,tmp_key,shorterPath[i][leftNodeOrder.count - 1]);
     }
     
-    printMatriceGraph(shorterPath,node,leftNodeOrder.items,number_of_node);
-    printNodes(nodesNotVisited);
-    printf("\n");
-    
+    // printMatriceGraph(shorterPath,node,leftNodeOrder.items,number_of_node);
+    // printNodes(nodesNotVisited);
+    // printf("\n");
     
     arrfree(nodesNotVisited.items);
     arrfree(leftNodeOrder.items);

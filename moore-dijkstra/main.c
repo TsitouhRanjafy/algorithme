@@ -16,13 +16,11 @@ int main(){
         };
     char node[4] = {'A','C','D','X'};
     const size_t originNodePos = 0;
-
-
     Pairs *pcc = NULL;
+
+    printMatriceGraph(graph,node,node,number_of_node);
     pcc = moore_dijstra(graph,node,originNodePos,number_of_node);
-
-    printf(" A -> C = %u",shget(pcc,"C"));
-
+    printf(" A -> C : %u",shget(pcc,"C")); // get the weight for A to C
 
     for (size_t i = 0; i < shlen(pcc); ++i) {
             free(pcc[i].key);    
@@ -30,3 +28,5 @@ int main(){
     shfree(pcc);
     return 0;
 }
+
+
