@@ -1,10 +1,8 @@
 #include<stdio.h>
-#include<string.h>
 
-
+// implementation
 #define MOORE_DIJSKTRA_IMPEMENTATION
 #include "moore-dijkstra.h"
-
 
 int main(){
     const size_t number_of_node = 4;
@@ -18,9 +16,12 @@ int main(){
     const size_t originNodePos = 0;
     Pairs *pcc = NULL;
 
+    // print the graph
     printMatriceGraph(graph,node,node,number_of_node);
+    // usage of algo
     pcc = moore_dijstra(graph,node,originNodePos,number_of_node);
-    printf(" A -> C : %u",shget(pcc,"C")); // get the weight for A to C
+    // get the weight for A to C
+    printf(" A -> C : %u",shget(pcc,"C")); 
 
     for (size_t i = 0; i < shlen(pcc); ++i) {
             free(pcc[i].key);    
