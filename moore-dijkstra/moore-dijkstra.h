@@ -173,7 +173,7 @@ Pairs* moore_dijstra(void *matrice_graph, char *node, size_t originNodePos, size
     };
     KV *indexToNode = NULL;
     Pairs *nodesIndex = NULL;
-    int shorterPath[number_of_node][number_of_node] = {};
+    int shorterPath[number_of_node][number_of_node];
     char tmp_key[2];
     
     // init node not visited
