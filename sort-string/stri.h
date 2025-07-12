@@ -35,8 +35,10 @@ void swap(char *s[], size_t a, size_t b){
 char cmin(char a, char b){
     unsigned char n = (a >= 97) ? (a - 32) : a; 
     unsigned char m = (b >= 97) ? (b - 32) : b;
-    assert((n <= 90) && (n >= 65));
-    assert((m <= 90) && (m >= 65));
+    assert((n <= 90));
+    assert((m <= 90));
+    assert((n >= 65));
+    assert((m >= 65));
     return (n - m);
 }
 
@@ -44,12 +46,15 @@ char cmin(char a, char b){
 // return negatif if a < b,
 // return positif if a > b,
 // return 0 if a == b
+char min(char *a, char *b, size_t i,size_t l){
+    if (cmin(a[i], b[i]) < 0) return -1;
+    if (cmin(a[i], b[i]) > 0) return 1;
+    i++;
+    if (i < l) min(a,b,i,l);
+    else return 0;
+}
 char smin(char *a, char *b, size_t l){
-    for (size_t i = 0; i < l; ++i){
-        if (cmin(a[i], b[i]) < 0) return -1;
-        if (cmin(a[i], b[i]) > 0) return 1;
-    }
-    return 0;
+   return min(a,b,0,l);
 }
 
 

@@ -3,7 +3,7 @@
 
 int main(){
 
-    char *string[] = {"ofg", "ofz","ofa", "oca"};
+    char *string[] = {"ofg","ofg", "ofz","ofa", "oca"};
     char *string2[] = {
     "alpha", "zulu", "delta", "bravo", "echo",
     "foxtrot", "golf", "hotel", "india", "juliet",
@@ -11,9 +11,9 @@ int main(){
     "papa", "quebec", "romeo", "sierra", "tango"
     };
 
-    sprint(string,4);
-    stri(string,4,3);
-    sprint(string,4);
+    sprint(string,sizeof(string) / sizeof(string[0]));
+    stri(string,sizeof(string) / sizeof(string[0]),3);
+    sprint(string,sizeof(string) / sizeof(string[0]));
 
     printf("\n");
 
