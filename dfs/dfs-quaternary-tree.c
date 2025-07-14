@@ -20,8 +20,11 @@ int main(){
     tree = createNode('A');
     tree->adj1 = createNode('B');
     tree->adj1->adj1 = createNode('D');
+    tree->adj1->adj1->adj1 = createNode('X');
+    tree->adj1->adj1->adj2 = createNode('Z');
     tree->adj1->adj2 = createNode('E');
     tree->adj1->adj3 = createNode('F');
+    tree->adj1->adj4 = createNode('O');
     tree->adj2 = createNode('C');
     tree->adj2->adj1 = createNode('G');
     tree->adj2->adj2 = createNode('K');
@@ -59,9 +62,9 @@ void printPosOrder(struct node* tree){
 // free the tree
 void freeTree(struct node* tree){
     if (tree == NULL) return;
-    freeTree(tree->adj4);
-    freeTree(tree->adj3);
-    freeTree(tree->adj2);
     freeTree(tree->adj1);
+    freeTree(tree->adj2);
+    freeTree(tree->adj3);
+    freeTree(tree->adj4);
     free(tree);
 }

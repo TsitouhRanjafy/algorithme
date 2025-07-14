@@ -8,7 +8,11 @@ graph G {
     G [shape=ellipse,color=green];
     K [shape=ellipse,color=green];
     L [shape=ellipse,color=green];
+    O [shape=ellipse,color=green];
+    X [shape=ellipse,color=green];
+    Z [shape=ellipse,color=green];
     A -- {B,C,L};
-    B -- {D,E,F};
+    B -- {O,D,E,F};
+    D -- {X,Z};
     C -- {G,K};
 }
