@@ -1,0 +1,14 @@
+graph G {
+    A [shape=ellipse,color=green];
+    B [shape=ellipse,color=green];
+    C [shape=ellipse,color=green];
+    D [shape=ellipse,color=green];
+    E [shape=ellipse,color=green];
+    F [shape=ellipse,color=green];
+    G [shape=ellipse,color=green];
+    K [shape=ellipse,color=green];
+    L [shape=ellipse,color=green];
+    A -- {B,C,L};
+    B -- {D,E,F};
+    C -- {G,K};
+}
