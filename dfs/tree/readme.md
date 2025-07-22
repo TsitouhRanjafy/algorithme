@@ -1,4 +1,4 @@
-## DFS traversal of a Tree (Depth-First Search )
+## DFS traversal of a Tree ( Depth-First Search )
 
 ### Binary tree
 
