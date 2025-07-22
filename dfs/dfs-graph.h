@@ -23,7 +23,6 @@ typedef struct {
 void dfsRec(KV_ITEM *adj, KV_BOOL **visited, size_t *node, size_t node_n, size_t origin, size_t **res){
     
     hmput(*visited,origin,1);
-    printf("%d ",origin);
     arrput(*res,origin);
     
     size_t *tmp = hmget(adj,origin);
@@ -32,6 +31,15 @@ void dfsRec(KV_ITEM *adj, KV_BOOL **visited, size_t *node, size_t node_n, size_t
             dfsRec(adj,visited,node,node_n,tmp[j],res);
         }
     }
+}
+
+size_t *dfs(KV_ITEM *adj, size_t *node, size_t node_n, size_t origin){
+    KV_BOOL *visited = NULL;
+    size_t *res = NULL;
+    dfsRec(adj,&visited,node,node_n,origin,&res);
+    hmfree(visited);
+
+    return res;
 }
 
 #endif
