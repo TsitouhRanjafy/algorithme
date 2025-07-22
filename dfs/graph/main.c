@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdbool.h>
+#define DFS_IMPLEMENTATION
 #include "../dfs-graph.h"
 
 int main(){
