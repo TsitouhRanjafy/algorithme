@@ -24,7 +24,7 @@ typedef struct {
 } KV_BOOL;
 
 size_t *dfs(KV_ITEM *adj, size_t *node, size_t node_n, size_t origin);
-size_t *EulerCheminByFleury(KV_ITEM *adj, size_t *node, size_t node_n);
+size_t *EulerPathByFleury(KV_ITEM *adj, size_t *node, size_t node_n);
 
 #ifdef DFS_IMPLEMENTATION
 
@@ -108,12 +108,24 @@ void fleuryRec(KV_ITEM *adj, size_t *connexStatus, size_t *node, size_t node_n, 
     arrfree(dfs_result);
 }
 
-size_t *EulerCheminByFleury(KV_ITEM *adj, size_t *node, size_t node_n){
+size_t *EulerPathByFleury(KV_ITEM *adj, size_t *node, size_t node_n){
+    size_t impair_count = 0;
+    int impair_pos = 0;
+    for (size_t i = 0; i < node_n; i++){
+        if ((arrlen(hmget(adj,node[i])) % 2) == 1) {
+            impair_count += 1;
+            impair_pos = i;
+        }
+    }
+    if ((impair_count != 2) && (impair_count != 0)) return NULL;
+
     size_t *c = NULL;
     size_t connexStatus = node_n;
-    size_t origin = node[0];
-
+    size_t origin = node[impair_pos];
     fleuryRec(adj, &connexStatus, node, node_n, origin, &c);
+
+    if (impair_count == 0) assert(c[0] == c[arrlen(c) - 1]);
+    if (impair_count == 2) assert(c[0] != c[arrlen(c) - 1]);
     return c;
 }
 
