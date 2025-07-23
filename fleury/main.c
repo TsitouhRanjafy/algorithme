@@ -3,7 +3,8 @@
 #include "graph.h"
 
 void printGraph(KV_ITEM *adj, size_t *node, size_t node_n);
-void fleuryRecDirected(KV_ITEM *adj_graph, size_t *connexStatus, size_t *node, size_t node_n, size_t origin, size_t **c);
+void fleuryRecNode(KV_ITEM *adj_graph, size_t *connexStatus, size_t *node, size_t node_n, size_t origin, size_t **c);
+
 
 int main(){
     KV_ITEM *adj = NULL;
@@ -59,14 +60,8 @@ int main(){
 
     printf(" adjacent: \n");
     printGraph(adj, node, node_n);
-    size_t *dfs_result = dfs(adj, node, node_n, 0);
     printf("\n\n");
 
-    
-    // size_t *c = NULL;
-    // size_t connexStatus = node_n;
-    // size_t origin = node[0];
-    // fleuryRecDirected(adj, &connexStatus, node, node_n, 0, &c);
     
     size_t *euleur_chemin = EulerPathByFleury(adj, node, node_n);
     printf(" euler chemin/circuit: \n");
@@ -74,22 +69,30 @@ int main(){
         printf(" %u",euleur_chemin[i]);
     }
     
+    size_t *hamiltonien_chemin = HamiltonienPathByFleury(adj, node, node_n);
+    printf("\n hamiltonien chemin: \n");
+    for (size_t i = 0; i < arrlen(hamiltonien_chemin); i++){
+        printf(" %u",hamiltonien_chemin[i]);
+    }
 
     for (size_t i = 0; i < hmlen(adj); i++){
         arrfree(adj[i].value);
     }
-    hmfree(adj);
-    arrfree(dfs_result);
-    arrfree(euleur_chemin);
 
-    // arrfree(c);
+    hmfree(adj);
+    arrfree(euleur_chemin);
+    arrfree(hamiltonien_chemin);
     return 0;
 }
 
 
+
 void printGraph(KV_ITEM *adj, size_t *node, size_t node_n){
     for (size_t i = 0; i < hmlen(adj); i++){
-        printf(" %u: %u",node[i],arrlen(hmget(adj,node[i])));
+        printf(" %u: ",node[i]);
+        for (size_t j = 0; j < arrlen(hmget(adj,node[i])); j++){
+            printf("%u",hmget(adj, node[i])[j]);
+        }
         printf("\n");
     }
 }

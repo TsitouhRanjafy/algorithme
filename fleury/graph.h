@@ -23,9 +23,11 @@ typedef struct {
     bool value;
 } KV_BOOL;
 
-size_t *dfs(KV_ITEM *adj, size_t *node, size_t node_n, size_t origin);
 size_t *EulerPathByFleury(KV_ITEM *adj, size_t *node, size_t node_n);
+size_t *HamiltonienPathByFleury(KV_ITEM *adj, size_t *node,size_t node_n);
+size_t *dfs(KV_ITEM *adj, size_t *node, size_t node_n, size_t origin);
 KV_ITEM * cp_graph(KV_ITEM *adj, size_t *node, size_t node_n);
+size_t* cp_sousadj(size_t *_item, size_t _item_n);
 
 #ifdef DFS_IMPLEMENTATION
 
@@ -134,6 +136,104 @@ size_t *EulerPathByFleury(KV_ITEM *adj, size_t *node, size_t node_n){
     }
     hmfree(adj_graph);
     return c;
+}
+
+void fleuryRecNode(KV_ITEM *adj_graph, size_t *connexStatus, size_t *node, size_t node_n, size_t origin, size_t **c){;
+    KV_ITEM *adj = cp_graph(adj_graph, node, node_n);
+
+    arrput(*c,origin); // notre chemin d'euler
+    // printf("\n origin: %u, connex_status: %u\n",origin,*connexStatus);
+    size_t *dfs_result = NULL;
+
+    // tout l'adjacent du noeud
+    size_t len_sous_adj = arrlen(hmget(adj, origin));
+    size_t *sous_adj = cp_sousadj(hmget(adj, origin), len_sous_adj);
+    
+    for (size_t i = 0; i < len_sous_adj; i++){
+        
+        // essayer de suprimer cette noeud
+        size_t tmp = sous_adj[i];
+        size_t tmp_len_sous_adj = arrlen(hmget(adj, tmp));
+        size_t *tmp_sous_adj = cp_sousadj(hmget(adj, tmp), tmp_len_sous_adj);
+        arrfree(hmget(adj, tmp));
+        hmdel(adj, tmp);
+        for (size_t j = 0; j < tmp_len_sous_adj; j++){
+            size_t *tmp_sous_sous_adj = hmget(adj, tmp_sous_adj[j]);
+            for (size_t k = 0; k < arrlen(tmp_sous_sous_adj); k++){
+                if (tmp_sous_sous_adj[k] == tmp) {
+                    arrdel(tmp_sous_sous_adj, k);
+                    break;
+                }
+            }
+        }
+
+        // tester si notre graph reste connex
+        dfs_result = dfs(adj, node, node_n, origin);
+        if ((arrlen(dfs_result) == *connexStatus) || (i == (len_sous_adj - 1))) {
+            // remotons le node qu'on avais suprimer avant
+            hmput(adj, tmp, tmp_sous_adj);
+            for (size_t j = 0; j < tmp_len_sous_adj; j++){
+                arrput(hmget(adj, tmp_sous_adj[j]), tmp);
+            }
+            
+            // suprimer le noeud origin
+            for (size_t j = 0; j < len_sous_adj; j++){
+                size_t *tmp_sous_sous_adj = hmget(adj, sous_adj[j]);
+                for (size_t k = 0; k < arrlen(tmp_sous_sous_adj); k++){
+                    if (tmp_sous_sous_adj[k] == origin) {
+                        arrdel(tmp_sous_sous_adj, k);
+                        break;
+                    }
+                }
+            }
+            arrfree(hmget(adj, origin));
+            hmdel(adj, origin);
+
+            // passe au noeud suivant
+            *connexStatus = *connexStatus - 1;
+            fleuryRecNode(adj, connexStatus, node, node_n, tmp, c);
+            break;
+        } 
+
+        // remotons le node qu'on avais suprimer avant
+        hmput(adj, tmp, tmp_sous_adj);
+        for (size_t j = 0; j < tmp_len_sous_adj; j++){
+            arrput(hmget(adj, tmp_sous_adj[j]), tmp);
+        }
+    
+        // et passe à l'adjacent suivant
+        arrfree(dfs_result);
+    }
+
+    arrfree(dfs_result);
+    for (size_t i = 0; i < hmlen(adj); i++){
+        arrfree(adj[i].value);
+    }
+    hmfree(adj);
+    arrfree(sous_adj);
+    adj = NULL;
+}
+
+size_t *HamiltonienPathByFleury(KV_ITEM *adj, size_t *node,size_t node_n){
+    KV_ITEM *adj_graph = cp_graph(adj, node, node_n);
+    size_t *c = NULL;
+    size_t connexStatus = node_n - 1;
+    size_t origin = node[0];
+    fleuryRecNode(adj_graph, &connexStatus, node, node_n, origin, &c);
+
+    for (size_t i = 0; i < hmlen(adj_graph); i++){
+        arrfree(adj_graph[i].value);
+    }
+    hmfree(adj_graph);
+    return c;
+}
+
+size_t* cp_sousadj(size_t *_item, size_t _item_n){
+    size_t *item = NULL;
+    for (size_t i = 0; i < _item_n; i++){
+        arrput(item, _item[i]);
+    }
+    return item;
 }
 
 KV_ITEM * cp_graph(KV_ITEM *adj, size_t *node, size_t node_n){
