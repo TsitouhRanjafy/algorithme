@@ -1,6 +1,8 @@
 /**
- * @file dfs-graph.h
- * dfs for undirected graph
+ * For undirected graph only
+ * Implemented: - DFS
+ *              - Euler path or cycle by Fleury algo
+ *              - ...    
  */
 
 #ifndef DFS_GRAPH
@@ -22,11 +24,13 @@ typedef struct {
 } KV_BOOL;
 
 size_t *dfs(KV_ITEM *adj, size_t *node, size_t node_n, size_t origin);
+size_t *EulerCheminByFleury(KV_ITEM *adj, size_t *node, size_t node_n);
 
 #ifdef DFS_IMPLEMENTATION
 
 
 
+// DFS GRAPH
 void dfsRec(KV_ITEM *adj, KV_BOOL **visited, size_t *node, size_t node_n, size_t origin, size_t **res){
     
     hmput(*visited,origin,1);
@@ -47,6 +51,70 @@ size_t *dfs(KV_ITEM *adj, size_t *node, size_t node_n, size_t origin){
     dfsRec(adj,&visited,node,node_n,origin,&res);
     hmfree(visited);
     return res;
+}
+
+// EULER CHEMIN BY FLEURY ALGO
+void fleuryRec(KV_ITEM *adj, size_t *connexStatus, size_t *node, size_t node_n, size_t origin, size_t **c){;
+    arrput(*c,origin); // notre chemin d'euler
+    // printf("\n origin: %u, connex_status: %u\n",origin,*connexStatus);
+    size_t *dfs_result = NULL;
+
+    // tout l'adjacent du noeud
+    size_t *sous_adj1 = hmget(adj,origin);
+    size_t len_sous_adj1 = arrlen(sous_adj1);
+    for (size_t i = 0; i < len_sous_adj1; i++){
+        
+        // essayer de suprimer l'arc
+        size_t tmp1 = sous_adj1[i];
+        size_t *sous_adj2 = hmget(adj,tmp1);
+        arrdel(sous_adj1,i);
+        size_t j = 0;
+        int tmp2 = -1;
+        while (j < arrlen(sous_adj2)){
+            if (sous_adj2[j] == origin) {
+                tmp2 = sous_adj2[j];
+                arrdel(sous_adj2,j);
+                break;
+            }
+            j++;
+        }
+        assert(tmp2 > -1);
+
+        // tester si notre graph reste connex
+        dfs_result = dfs(adj, node, node_n, origin);
+        if (arrlen(dfs_result) == *connexStatus) {
+            // passe au noeude suivant
+            fleuryRec(adj,connexStatus,node,node_n,tmp1,c);
+            break;
+
+        // tester si c'est node dernier noeude à chosir
+        // même le graph n'est pas connex
+        } else if (i == (len_sous_adj1 - 1)){
+            *connexStatus = *connexStatus - 1;
+            assert(*connexStatus >= 0);
+            // passe au noeude suivant
+            fleuryRec(adj,connexStatus,node,node_n,tmp1,c);
+            break;
+        }
+
+        // si non, rajoutons les arc qu'on avais suprimer
+        arrins(sous_adj1,i,tmp1);
+        arrins(sous_adj2,j,tmp2);
+        arrfree(dfs_result);
+        dfs_result = NULL;
+
+        // et passe à l'adjacent suivant
+    }
+    arrfree(dfs_result);
+}
+
+size_t *EulerCheminByFleury(KV_ITEM *adj, size_t *node, size_t node_n){
+    size_t *c = NULL;
+    size_t connexStatus = node_n;
+    size_t origin = node[0];
+
+    fleuryRec(adj, &connexStatus, node, node_n, origin, &c);
+    return c;
 }
 
 #endif
