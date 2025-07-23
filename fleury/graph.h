@@ -5,8 +5,8 @@
  *              - ...    
  */
 
-#ifndef DFS_GRAPH
-#define DFS_GRAPH
+#ifndef GRAPH
+#define GRAPH
 
 #include<stdio.h>
 #include<stdbool.h>
@@ -25,6 +25,7 @@ typedef struct {
 
 size_t *dfs(KV_ITEM *adj, size_t *node, size_t node_n, size_t origin);
 size_t *EulerPathByFleury(KV_ITEM *adj, size_t *node, size_t node_n);
+KV_ITEM * cp_graph(KV_ITEM *adj, size_t *node, size_t node_n);
 
 #ifdef DFS_IMPLEMENTATION
 
@@ -119,14 +120,33 @@ size_t *EulerPathByFleury(KV_ITEM *adj, size_t *node, size_t node_n){
     }
     if ((impair_count != 2) && (impair_count != 0)) return NULL;
 
+    KV_ITEM *adj_graph = cp_graph(adj, node, node_n);
     size_t *c = NULL;
     size_t connexStatus = node_n;
     size_t origin = node[impair_pos];
-    fleuryRec(adj, &connexStatus, node, node_n, origin, &c);
+    fleuryRec(adj_graph, &connexStatus, node, node_n, origin, &c);
 
     if (impair_count == 0) assert(c[0] == c[arrlen(c) - 1]);
     if (impair_count == 2) assert(c[0] != c[arrlen(c) - 1]);
+
+    for (size_t i = 0; i < hmlen(adj_graph); i++){
+        arrfree(adj_graph[i].value);
+    }
+    hmfree(adj_graph);
     return c;
+}
+
+KV_ITEM * cp_graph(KV_ITEM *adj, size_t *node, size_t node_n){
+    KV_ITEM *adj_graph = NULL;
+    for (size_t i = 0; i < node_n; i++){
+        size_t *item = NULL;
+        size_t *sous_adj = hmget(adj, node[i]);
+        for (size_t j = 0; j < arrlen(sous_adj); j++){
+            arrput(item, sous_adj[j]);
+        }
+        hmput(adj_graph, node[i], item);
+    }
+    return adj_graph;
 }
 
 #endif
