@@ -1,13 +1,3 @@
-/**
- * For undirected graph only
- * Implemented: - dfs (depth-first search)
- *              - Euler path or cycle by Fleury algo
- *              - Hamiltonien path by Fleury algo
- */
-
-#ifndef GRAPH
-#define GRAPH
-
 #include<stdio.h>
 #include<stdbool.h>
 #define STB_DS_IMPLEMENTATION
@@ -23,17 +13,27 @@ typedef struct {
     bool value;
 } KV_BOOL;
 
-size_t *EulerPathByFleury(KV_ITEM *adj, size_t *node, size_t node_n);
-size_t *HamiltonienPathByFleury(KV_ITEM *adj, size_t *node,size_t node_n, size_t origin_i);
-size_t *dfs(KV_ITEM *adj, size_t *node, size_t node_n, size_t origin);
-KV_ITEM * cp_graph(KV_ITEM *adj, size_t *node, size_t node_n);
-size_t* cp_sousadj(size_t *_item, size_t _item_n);
+size_t* cp_sousadj(size_t *_item, size_t _item_n){
+    size_t *item = NULL;
+    for (size_t i = 0; i < _item_n; i++){
+        arrput(item, _item[i]);
+    }
+    return item;
+}
 
-#ifdef DFS_IMPLEMENTATION
+KV_ITEM * cp_graph(KV_ITEM *adj, size_t *node, size_t node_n){
+    KV_ITEM *adj_graph = NULL;
+    for (size_t i = 0; i < node_n; i++){
+        size_t *item = NULL;
+        size_t *sous_adj = hmget(adj, node[i]);
+        for (size_t j = 0; j < arrlen(sous_adj); j++){
+            arrput(item, sous_adj[j]);
+        }
+        hmput(adj_graph, node[i], item);
+    }
+    return adj_graph;
+}
 
-
-
-// DFS GRAPH
 void dfsRec(KV_ITEM *adj, KV_BOOL **visited, size_t *node, size_t node_n, size_t origin, size_t **res){
     
     hmput(*visited,origin,1);
@@ -47,16 +47,17 @@ void dfsRec(KV_ITEM *adj, KV_BOOL **visited, size_t *node, size_t node_n, size_t
     }
 }
 
+// DFS 
 size_t *dfs(KV_ITEM *adj, size_t *node, size_t node_n, size_t origin){
     KV_BOOL *visited = NULL;
     size_t *res = NULL;
-
+    
     dfsRec(adj,&visited,node,node_n,origin,&res);
     hmfree(visited);
     return res;
 }
 
-// EULER CHEMIN BY FLEURY ALGO
+
 void fleuryRec(KV_ITEM *adj, size_t *connexStatus, size_t *node, size_t node_n, size_t origin, size_t **c){;
     arrput(*c,origin); // notre chemin d'euler
     // printf("\n origin: %u, connex_status: %u\n",origin,*connexStatus);
@@ -111,6 +112,7 @@ void fleuryRec(KV_ITEM *adj, size_t *connexStatus, size_t *node, size_t node_n, 
     arrfree(dfs_result);
 }
 
+// EULER PATH 
 size_t *EulerPathByFleury(KV_ITEM *adj, size_t *node, size_t node_n){
     size_t impair_count = 0;
     int impair_pos = 0;
@@ -214,7 +216,7 @@ void fleuryRecNode(KV_ITEM *adj_graph, size_t *connexStatus, size_t *node, size_
     adj = NULL;
 }
 
-// HAMILTONIEN CHEMIN BY FLEURY ALGO
+// HAMILTONIEN PATH
 size_t *HamiltonienPathByFleury(KV_ITEM *adj, size_t *node,size_t node_n, size_t origin_i){
     KV_ITEM *adj_graph = cp_graph(adj, node, node_n);
     size_t *c = NULL;
@@ -230,53 +232,32 @@ size_t *HamiltonienPathByFleury(KV_ITEM *adj, size_t *node,size_t node_n, size_t
     return c;
 }
 
-size_t* cp_sousadj(size_t *_item, size_t _item_n){
-    size_t *item = NULL;
-    for (size_t i = 0; i < _item_n; i++){
-        arrput(item, _item[i]);
-    }
-    return item;
+// JUST FOR TEST
+int somme(int a, int b){
+    return a+b;
 }
 
-KV_ITEM * cp_graph(KV_ITEM *adj, size_t *node, size_t node_n){
-    KV_ITEM *adj_graph = NULL;
-    for (size_t i = 0; i < node_n; i++){
-        size_t *item = NULL;
-        size_t *sous_adj = hmget(adj, node[i]);
-        for (size_t j = 0; j < arrlen(sous_adj); j++){
-            arrput(item, sous_adj[j]);
-        }
-        hmput(adj_graph, node[i], item);
-    }
-    return adj_graph;
-}
-
+// REFUNCTION 
 void hm_put(KV_ITEM **adj, size_t key, size_t *item){
     hmput(*adj, key, item);
 }
-
 void arr_put(size_t **item, size_t v){
     arrput(*item,v);
 }
-
-void arr_get(size_t **item, size_t i){
-    printf("item[%u] = %u\n", i, (*item)[i]);
+size_t arr_get(size_t **item, size_t i){
+    return (*item)[i];
 }
-
 size_t arr_len(size_t *item){
     return arrlen(item);
 }
 
+// FREE FUNCTION
 void free_graph(KV_ITEM **adj){
     for (size_t i = 0; i < hmlen(*adj); i++){
         arrfree((*adj)[i].value);
     }
     hmfree(*adj);
 }
-
 void arr_free(size_t **item){
     arrfree(*item);
 }
-
-#endif
-#endif
