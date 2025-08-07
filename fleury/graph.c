@@ -217,11 +217,12 @@ void fleuryRecNode(KV_ITEM *adj_graph, size_t *connexStatus, size_t *node, size_
 }
 
 // HAMILTONIEN PATH
-size_t *HamiltonienPathByFleury(KV_ITEM *adj, size_t *node,size_t node_n){
+size_t *HamiltonienPathByFleury(KV_ITEM *adj, size_t *node,size_t node_n, size_t origin_i){
     KV_ITEM *adj_graph = cp_graph(adj, node, node_n);
     size_t *c = NULL;
     size_t connexStatus = node_n - 1;
-    size_t origin = node[0];
+    assert(origin_i < node_n);
+    size_t origin = node[origin_i];
     fleuryRecNode(adj_graph, &connexStatus, node, node_n, origin, &c);
 
     for (size_t i = 0; i < hmlen(adj_graph); i++){
