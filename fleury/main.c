@@ -3,59 +3,139 @@
 #include "graph.h"
 
 void printGraph(KV_ITEM *adj, size_t *node, size_t node_n);
-void fleuryRecNode(KV_ITEM *adj_graph, size_t *connexStatus, size_t *node, size_t node_n, size_t origin, size_t **c);
 
 
 int main(){
     KV_ITEM *adj = NULL;
-    size_t node[] = {0,1,2,3,4,5,6};
+    size_t node[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19};
+    // size_t node[] = {0,1,2,3,4};
     size_t node_n = sizeof(node) / sizeof(node[0]);
     
     
+    // // init graph
+    // size_t *item = NULL;
+    // arr_put(&item,1);
+    // hm_put(&adj, 0, item);
+
+    // item = NULL;
+    // arr_put(&item,0);
+    // hm_put(&adj, 1, item);
+
     // init graph
-    // adj for 3
     size_t *item = NULL;
-    arrput(item,0);
-    arrput(item,1);
-    hmput(adj,3,item);
 
-    // adj for 0
     item = NULL;
-    arrput(item,3);
-    arrput(item,4);
-    hmput(adj,0,item);
-    
-    // adj for 1
-    item = NULL;
-    arrput(item,3);
-    arrput(item,4);
-    hmput(adj,1,item);
-    
-    // adj for 4
-    item = NULL;
-    arrput(item,0);
-    arrput(item,1);
-    arrput(item,2);
-    arrput(item,6);
-    hmput(adj,4,item);
-    
-    // adj for 2
-    item = NULL;
-    arrput(item,4);
-    arrput(item,5);
-    hmput(adj,2,item);
+    arr_put(&item, 1);
+    hm_put(&adj, 0, item);
 
-    // adj for 6
     item = NULL;
-    arrput(item,4);
-    arrput(item,5);
-    hmput(adj,6,item);
+    arr_put(&item, 0);
+    arr_put(&item, 2);
+    hm_put(&adj, 1, item);
 
-    // adj for 5
     item = NULL;
-    arrput(item,2);
-    arrput(item,6);
-    hmput(adj,5,item);
+    arr_put(&item, 1);
+    arr_put(&item, 3);
+    hm_put(&adj, 2, item);
+
+    item = NULL;
+    arr_put(&item, 2);
+    arr_put(&item, 4);
+    hm_put(&adj, 3, item);
+
+    item = NULL;
+    arr_put(&item, 3);
+    arr_put(&item, 5);
+    hm_put(&adj, 4, item);
+
+    item = NULL;
+    arr_put(&item, 4);
+    arr_put(&item, 6);
+    arr_put(&item, 9);
+    hm_put(&adj, 5, item);
+
+    item = NULL;
+    arr_put(&item, 5);
+    arr_put(&item, 7);
+    arr_put(&item, 10);
+    hm_put(&adj, 6, item);
+
+    item = NULL;
+    arr_put(&item, 6);
+    arr_put(&item, 8);
+    arr_put(&item, 11);
+    hm_put(&adj, 7, item);
+
+    item = NULL;
+    arr_put(&item, 7);
+    hm_put(&adj, 8, item);
+
+    item = NULL;
+    arr_put(&item, 5);
+    arr_put(&item, 12);
+    arr_put(&item, 10);
+    hm_put(&adj, 9, item);
+
+    item = NULL;
+    arr_put(&item, 9);
+    arr_put(&item, 6);
+    arr_put(&item, 11);
+    arr_put(&item, 13);
+    hm_put(&adj, 10, item);
+
+    item = NULL;
+    arr_put(&item, 7);
+    arr_put(&item, 14);
+    arr_put(&item, 10);
+    hm_put(&adj, 11, item);
+
+    item = NULL;
+    arr_put(&item, 9);
+    arr_put(&item, 13);
+    arr_put(&item, 16);
+    hm_put(&adj, 12, item);
+
+    item = NULL;
+    arr_put(&item, 10);
+    arr_put(&item, 12);
+    arr_put(&item, 17);
+    arr_put(&item, 14);
+    hm_put(&adj, 13, item);
+
+    item = NULL;
+    arr_put(&item, 11);
+    arr_put(&item, 13);
+    arr_put(&item, 18);
+    arr_put(&item, 15);
+    hm_put(&adj, 14, item);
+
+    item = NULL;
+    arr_put(&item, 14);
+    arr_put(&item, 19);
+    hm_put(&adj, 15, item);
+
+    item = NULL;
+    arr_put(&item, 12);
+    arr_put(&item, 17);
+    hm_put(&adj, 16, item);
+
+    item = NULL;
+    arr_put(&item, 18);
+    arr_put(&item, 13);
+    arr_put(&item, 16);
+    hm_put(&adj, 17, item);
+
+    item = NULL;
+    arr_put(&item, 14);
+    arr_put(&item, 17);
+    arr_put(&item, 19);
+    hm_put(&adj, 18, item);
+
+    item = NULL;
+    arr_put(&item, 15);
+    arr_put(&item, 18);
+    hm_put(&adj, 19, item);
+
 
 
     printf(" adjacent: \n");
@@ -64,27 +144,27 @@ int main(){
 
     
     size_t *euleur_chemin = EulerPathByFleury(adj, node, node_n);
-    printf(" euler chemin/circuit: \n");
-    for (size_t i = 0; i < arrlen(euleur_chemin); i++){
+    printf(" euler chemin/circuit: %u\n", arrlen(euleur_chemin));
+    for (size_t i = 0; i < arr_len(euleur_chemin); i++){
         printf(" %u",euleur_chemin[i]);
     }
     
-    size_t *hamiltonien_chemin = HamiltonienPathByFleury(adj, node, node_n);
-    printf("\n hamiltonien chemin: \n");
-    for (size_t i = 0; i < arrlen(hamiltonien_chemin); i++){
-        printf(" %u",hamiltonien_chemin[i]);
+    
+    for (size_t i = 0; i <= 19; i++){
+        size_t *hamiltonien_chemin = HamiltonienPathByFleury(adj, node, node_n, i);
+        printf("\n hamiltonien chemin: %u\n",arrlen(hamiltonien_chemin));
+        for (size_t i = 0; i < arr_len(hamiltonien_chemin); i++){
+            printf(" %u",hamiltonien_chemin[i]);
+        }
+        arr_free(&hamiltonien_chemin);
+        printf("\n");
     }
+    
 
-    for (size_t i = 0; i < hmlen(adj); i++){
-        arrfree(adj[i].value);
-    }
-
-    hmfree(adj);
-    arrfree(euleur_chemin);
-    arrfree(hamiltonien_chemin);
+    free_graph(&adj);
+    arr_free(&euleur_chemin);
     return 0;
 }
-
 
 
 void printGraph(KV_ITEM *adj, size_t *node, size_t node_n){

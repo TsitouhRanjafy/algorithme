@@ -1,4 +1,4 @@
-import { error } from "console";
+
 
 export type binaire = 1 | 0;
 
