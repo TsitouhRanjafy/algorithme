@@ -1,5 +1,5 @@
-let text: string = 'abracadabra';
-let pattern: string = 'dab'; // position 6 - 8 in text
+let text: string = 'rmairmai';
+let pattern: string = 'mai';
 let n: number = text.length;
 let p: number = pattern.length;
 
@@ -16,6 +16,8 @@ function searchOccurence(text: string, pattern: string) {
             while (j >= 0) {
                 if (pattern[j] != text[i + j]) {
                     i += calculOffset(text, pattern, i, j);
+                    console.log();
+                    
                     isBreaked = true;
                     break;
                 }
@@ -31,9 +33,9 @@ function searchOccurence(text: string, pattern: string) {
 function calculOffset(text: string, pattern: string, i: number, j: number): number { 
     let x = i + j;
     let pos_x_in_pattern = searchRightPos(pattern, text[x], p - 1 - j);
-    if (pos_x_in_pattern == -1) return p;
+    if (pos_x_in_pattern == -1) return 1 + j;
     if (j < p - 1 - pos_x_in_pattern) return p;
-    return Math.abs(p - 1 - pos_x_in_pattern + j);
+    return (j - (p - 1 - pos_x_in_pattern));
 }
 
 // console.log(calculOffset("ahcamam", "maam", 3, 3));
