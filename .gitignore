@@ -2,3 +2,6 @@ node_modules
 /**/main
 /**/build
 .vscode
+/**/.venv
+/**/.env
+/**/venv
