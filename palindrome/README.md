@@ -15,7 +15,7 @@ Une partitionnement d'une chaîne est **Palindrome Partitioning** si chaque sous
   - Output: list = ['aa','b','hh] 
 
 
-### Code with `Python`
+### Code avec `Python`
 
 ```Python
 from recursive import isPalindrome;
