@@ -7,7 +7,7 @@ int generateRandomNumber(int min, int max);
 
 int main(){
 
-    // printf("%d",time(NULL)); // time now, en timestamp
+    // printf("%d",time(NULL)); // time now, in timestamp
     printf("%d",generateRandomNumber(600,800));
     return EXIT_SUCCESS;
 }
