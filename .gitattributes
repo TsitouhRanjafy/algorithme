@@ -1,5 +1,5 @@
-tokenizer/lib/stb_ds.h linguist-detectable=false
-moore-dijkstra/lib/stb_ds.h linguist-detectable=false
-dfs/lib/stb_ds.h linguist-detectable=false
-fleury/lib/stb_ds.h linguist-detectable=false
-/**/*.html linguist-detectable=false
+/**/lib/stb_ds.h linguist-detectable=false
+# moore-dijkstra/lib/stb_ds.h linguist-detectable=false
+# dfs/lib/stb_ds.h linguist-detectable=false
+# fleury/lib/stb_ds.h linguist-detectable=false
+# /**/*.html linguist-detectable=false
